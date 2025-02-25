@@ -1,33 +1,31 @@
-package com.montreal.storage.api.controller.impl;
+package com.montreal.storage.api.domain.service;
 
-import com.montreal.storage.api.controller.IStorageApi;
 import com.montreal.storage.api.controller.dto.request.StorageRequest;
 import com.montreal.storage.api.controller.dto.response.StorageResponse;
-import com.montreal.storage.api.domain.service.StorageService;
+import com.montreal.storage.api.domain.repository.StorageRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RestController;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-
-@RestController
+@Slf4j
+@Service
 @RequiredArgsConstructor
-public class StorageApi implements IStorageApi {
+public class StorageService {
 
-    private final StorageService service;
+    private final StorageRepository repository;
 
-    @Override
     public StorageResponse uploadFile(MultipartFile file, StorageRequest request) {
         return null;
     }
 
-    @Override
     public StorageResponse getFile(String id) {
         return null;
     }
 
-    @Override
     public void deleteFile(String id) {
+
+        repository.deleteById(id);
 
     }
 

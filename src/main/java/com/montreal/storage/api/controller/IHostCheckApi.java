@@ -1,7 +1,7 @@
 package com.montreal.storage.api.controller;
 
 
-import com.montreal.storage.api.dto.response.CheckHostResponse;
+import com.montreal.storage.api.controller.dto.response.CheckHostResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -16,6 +16,6 @@ public class StorageRequest {
     private String nameFile;
     private String typeFile;
     private String description;
-    private Map<String, String> metadados;
+    private Map<String, String> metadata;
 
 }

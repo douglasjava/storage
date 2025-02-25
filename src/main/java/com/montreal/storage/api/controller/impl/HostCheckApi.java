@@ -1,7 +1,7 @@
 package com.montreal.storage.api.controller.impl;
 
 import com.montreal.storage.api.controller.IHostCheckApi;
-import com.montreal.storage.api.dto.response.CheckHostResponse;
+import com.montreal.storage.api.controller.dto.response.CheckHostResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;

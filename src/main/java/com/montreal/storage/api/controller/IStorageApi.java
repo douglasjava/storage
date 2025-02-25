@@ -17,14 +17,14 @@ public interface IStorageApi {
     @Operation(summary = "Faz upload de um arquivo para o Azure Storage")
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    ResponseEntity<StorageResponse> uploadFile(
+    StorageResponse uploadFile(
             @RequestPart("file") MultipartFile file,
             @RequestPart("metadata") StorageRequest request
     );
 
     @Operation(summary = "Obtém informações de um arquivo pelo ID")
     @GetMapping("/{id}")
-    ResponseEntity<StorageResponse> getFile(@PathVariable("id") String id);
+    StorageResponse getFile(@PathVariable("id") String id);
 
     @Operation(summary = "Deleta um arquivo do Azure Storage pelo ID")
     @ResponseStatus(HttpStatus.NO_CONTENT)
