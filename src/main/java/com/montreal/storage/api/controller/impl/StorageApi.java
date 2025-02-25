@@ -5,7 +5,6 @@ import com.montreal.storage.api.controller.dto.request.StorageRequest;
 import com.montreal.storage.api.controller.dto.response.StorageResponse;
 import com.montreal.storage.api.domain.service.StorageService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,17 +17,17 @@ public class StorageApi implements IStorageApi {
 
     @Override
     public StorageResponse uploadFile(MultipartFile file, StorageRequest request) {
-        return null;
+        return service.uploadFile(file, request);
     }
 
     @Override
     public StorageResponse getFile(String id) {
-        return null;
+        return service.getFile(id);
     }
 
     @Override
     public void deleteFile(String id) {
-
+        service.deleteFile(id);
     }
 
 }

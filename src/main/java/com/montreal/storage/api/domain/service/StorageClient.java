@@ -1,17 +1,16 @@
 package com.montreal.storage.api.domain.service;
 
-import com.azure.storage.blob.BlobClient;
-import com.azure.storage.blob.BlobContainerClient;
-import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
 import com.montreal.storage.api.domain.exceptions.StorageClientException;
 import com.montreal.storage.api.domain.properties.StorageProperties;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.UUID;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class StorageClient {
@@ -21,6 +20,8 @@ public class StorageClient {
     public String uploadFile(MultipartFile file) {
 
         try {
+
+            log.info("Enviando arquivo para o repositorio azure");
 
             var blobServiceClient = new BlobServiceClientBuilder()
                     .connectionString(storageProperties.getConnectionUrl())
