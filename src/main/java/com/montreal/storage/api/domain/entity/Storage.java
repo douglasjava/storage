@@ -1,5 +1,6 @@
 package com.montreal.storage.api.domain.entity;
 
+import com.montreal.storage.api.controller.dto.enumerations.SourceEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -8,8 +9,6 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
-import java.util.Map;
-
 
 @Data
 @Builder
@@ -24,7 +23,8 @@ public class Storage {
     private String nameFile;
     private String typeFile;
     private String description;
-    private Map<String, String> metadata;
+    private SourceEnum source;
+    private String product;
     private String url;
     private LocalDateTime dataUpload;
 

@@ -1,12 +1,12 @@
 package com.montreal.storage.api.controller.dto.response;
 
+import com.montreal.storage.api.controller.dto.enumerations.SourceEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.Map;
 
 @Data
 @Builder
@@ -18,7 +18,9 @@ public class StorageResponse {
     private String nameFile;
     private String url;
     private String typeFile;
-    private Map<String, String> metadata;
+    private String description;
+    private SourceEnum source;
+    private String product;
     private LocalDateTime dataUpload;
 
 }

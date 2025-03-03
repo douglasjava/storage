@@ -13,5 +13,6 @@ public class StorageProperties {
 
     private String connectionUrl;
     private String containerName;
+    private String sasToken;
 
 }

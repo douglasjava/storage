@@ -1,9 +1,10 @@
 package com.montreal.storage.api.controller;
 
-import com.montreal.storage.api.controller.dto.request.StorageRequest;
+import com.montreal.storage.api.controller.dto.enumerations.SourceEnum;
 import com.montreal.storage.api.controller.dto.response.StorageResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -19,12 +20,20 @@ public interface IStorageApi {
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     StorageResponse uploadFile(
             @RequestPart("file") MultipartFile file,
-            @RequestPart("metadata") StorageRequest request
+            @RequestParam("nameFile") String nameFile,
+            @RequestParam("typeFile") String typeFile,
+            @RequestParam(value = "description", required = false) String description,
+            @RequestParam(value = "costCenter") SourceEnum source,
+            @RequestParam(value = "product") String product
     );
 
     @Operation(summary = "Obtém informações de um arquivo pelo ID")
     @GetMapping("/{id}")
     StorageResponse getFile(@PathVariable("id") String id);
+
+    @Operation(summary = "Download pelo ID do arquivo")
+    @GetMapping("/download/{id}")
+    ResponseEntity<Resource> downloadFile(@PathVariable String id);
 
     @Operation(summary = "Deleta um arquivo do Azure Storage pelo ID")
     @ResponseStatus(HttpStatus.NO_CONTENT)

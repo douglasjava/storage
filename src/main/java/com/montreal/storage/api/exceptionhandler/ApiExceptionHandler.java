@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.fasterxml.jackson.databind.exc.PropertyBindingException;
 import com.montreal.storage.api.domain.exceptions.InternalErrorException;
 import com.montreal.storage.api.domain.exceptions.NotFoundException;
+import com.montreal.storage.api.domain.exceptions.StorageClientException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -19,8 +20,10 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.HttpMediaTypeNotAcceptableException;
+import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -44,6 +47,40 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
     private final MessageSource messageSource;
 
+
+    @Override
+    protected ResponseEntity<Object> handleMissingServletRequestParameter(
+            MissingServletRequestParameterException ex,
+            HttpHeaders headers,
+            HttpStatusCode status,
+            WebRequest request) {
+
+        ProblemType problemType = ProblemType.PARAMETRO_INVALIDO;
+        String detail = String.format("O parâmetro obrigatório '%s' está ausente na requisição.", ex.getParameterName());
+
+        Problem problem = createProblemBuilder(HttpStatus.valueOf(status.value()), problemType, detail)
+                .userMessage("Por favor, forneça o parâmetro obrigatório na requisição.")
+                .build();
+
+        return handleExceptionInternal(ex, problem, headers, status, request);
+
+    }
+
+    @Override
+    protected ResponseEntity<Object> handleHttpMediaTypeNotSupported(HttpMediaTypeNotSupportedException ex,
+                                                                     HttpHeaders headers, HttpStatusCode status,
+                                                                     WebRequest request) {
+
+        ProblemType problemType = ProblemType.PARAMETRO_INVALIDO;
+        String detail = String.format("O recurso não suporta esse contentType %s, que você tentou acessar", ex.getContentType());
+
+        Problem problem = createProblemBuilder(HttpStatus.valueOf(status.value()), problemType, detail)
+                .userMessage(ex.getMessage())
+                .build();
+
+        return handleExceptionInternal(ex, problem, headers, status, request);
+
+    }
 
     @Override
     protected ResponseEntity<Object> handleHttpMediaTypeNotAcceptable(HttpMediaTypeNotAcceptableException ex,
@@ -169,6 +206,19 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<Object> handleInternalErrorException(InternalErrorException ex, WebRequest request) {
 
         return getExceptionInternal(ex, request);
+
+    }
+
+    @ExceptionHandler(StorageClientException.class)
+    public ResponseEntity<Object> handleStorageClientException(StorageClientException ex, WebRequest request) {
+
+        HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
+        ProblemType problemType = ProblemType.ERRO_CLIENT;
+        String detail = ex.getMessage();
+
+        Problem problem = createProblemBuilder(status, problemType, detail).build();
+
+        return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
 
     }
 
